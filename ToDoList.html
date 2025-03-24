@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>TO-DO LIST</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .contenitoreLista {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 30%;
+        }
+
+        .sezioneAggiunta {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .bottoneAggiunta {
+            padding: 8px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+            border-radius: 4px;
+        }
+
+        .bottoneAggiunta:hover {
+            background: #218838;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+  
+        li {
+            background: #fff;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 2px solid #007bff;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bottoneElimina,
+        .bottoneSpostaSu,
+        .bottoneSpostaGiu,
+        .bottoneModifica {
+            background: #ffffff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="contenitoreLista">
+
+        <h2>To-Do List 📝</h2>
+
+        <div class="sezioneAggiunta">
+
+            <input type="text" id="inputTask" placeholder="inserisci un compito...">
+
+            <button class="bottoneAggiunta" id="bottoneAggiungi">aggiungi</button>
+
+        </div>
+
+        <ul id="listaTask"></ul>
+        <li id="taskPredefinito">Studiare Sistemi e Reti</li>
+
+    </div>
+
+    <script>
+
+        let listaTask = document.getElementById("listaTask");
+        let bottoneAggiungi = document.getElementById("bottoneAggiungi");
+
+        bottoneAggiungi.addEventListener("click", aggiungi);
+
+        function aggiungi() {
+            let input = document.getElementById("inputTask");
+            let testo = input.value.trim();
+            if (testo !== "") {
+
+                let nuovoTask = document.createElement("li");
+
+                let testoTask = document.createElement("div");
+                testoTask.textContent = testo;
+
+                let contenitoreBottoni = document.createElement("div");
+
+                let bottoneElimina = document.createElement("button");
+                bottoneElimina.textContent = "❌";
+                bottoneElimina.classList.add("bottoneElimina");
+
+                let bottoneSpostaSu = document.createElement("button");
+                bottoneSpostaSu.textContent = "⬆️";
+                bottoneSpostaSu.classList.add("bottoneSpostaSu");
+
+                let bottoneSpostaGiu = document.createElement("button");
+                bottoneSpostaGiu.textContent = "⬇️";
+                bottoneSpostaGiu.classList.add("bottoneSpostaGiu");
+
+                let bottoneModifica = document.createElement("button");
+                bottoneModifica.textContent = "✏️";
+                bottoneModifica.classList.add("bottoneModifica");
+
+                bottoneElimina.addEventListener("click", function () {
+                    nuovoTask.remove();
+                });
+
+                bottoneSpostaSu.addEventListener("click", function () {
+                    let taskPredefinito = document.getElementById("taskPredefinito");
+                    let prev = nuovoTask.previousElementSibling;
+                    if (prev && prev !== taskPredefinito) {
+                        nuovoTask.parentNode.insertBefore(nuovoTask, prev);
+                    }
+                });
+
+                bottoneSpostaGiu.addEventListener("click", function () {
+                    let next = nuovoTask.nextElementSibling;
+                    if (next) {
+                        nuovoTask.parentNode.insertBefore(next, nuovoTask);
+                    }
+                });
+
+                bottoneModifica.addEventListener("click", function () {
+                    let nuovoTesto = prompt("Modifica il tuo compito:", testoTask.textContent);
+                    if (nuovoTesto !== null && nuovoTesto.trim() !== "") {
+                        testoTask.textContent = nuovoTesto;
+                    }
+                });
+
+                contenitoreBottoni.appendChild(bottoneElimina);
+                contenitoreBottoni.appendChild(bottoneSpostaSu);
+                contenitoreBottoni.appendChild(bottoneSpostaGiu);
+                contenitoreBottoni.appendChild(bottoneModifica);
+
+                nuovoTask.appendChild(testoTask);
+                nuovoTask.appendChild(contenitoreBottoni);
+
+                let taskPredefinito = document.getElementById("taskPredefinito");
+
+                taskPredefinito.parentNode.insertBefore(nuovoTask, taskPredefinito.nextSibling);
+
+                input.value = "";
+
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
